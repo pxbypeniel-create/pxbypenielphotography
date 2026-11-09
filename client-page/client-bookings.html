@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PXByPeniel | Client Bookings</title>
+    <style>
+      :root {
+        --bg-dark: #0a0a0a;
+        --bg-card: #141414;
+        --bg-black-40: rgba(0, 0, 0, 0.4);
+        --border-color: #262626;
+        --border-hover: #d4af37;
+        --accent-gold: #d4af37;
+        --accent-gold-hover: #e5be3e;
+        --text-main: #f3f4f6;
+        --text-muted: #9ca3af;
+        --text-subtle: #6b7280;
+        --status-green: #10b981;
+        --status-red: #ef4444;
+        --font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+      }
+
+      /* Light Theme Variables */
+      [data-theme="light"] {
+        --bg-dark: #f8fafc;
+        --bg-card: #ffffff;
+        --bg-black-40: rgba(241, 245, 249, 0.8);
+        --border-color: #e2e8f0;
+        --border-hover: #d4af37;
+        --text-main: #0f172a;
+        --text-muted: #475569;
+        --text-subtle: #64748b;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        font-family: var(--font-family);
+        min-height: 100vh;
+        line-height: 1.5;
+        padding-bottom: 4rem;
+      }
+
+      ::selection {
+        background-color: var(--accent-gold);
+        color: #000;
+      }
+
+      /* Navigation Bar */
+      .navbar {
+        background-color: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        padding: 0.875rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brand-logo {
+        color: var(--accent-gold);
+        font-weight: 700;
+        font-size: 1.125rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+      }
+
+      .brand-logo img {
+        height: 3.5rem;
+        width: auto;
+        object-fit: contain;
+      }
+
+      .desktop-nav {
+        display: none;
+        gap: 2rem;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        padding-bottom: 0.25rem;
+        transition: color 0.2s ease;
+        cursor: pointer;
+      }
+
+      .nav-link.active {
+        color: var(--accent-gold);
+        border-bottom: 2px solid var(--accent-gold);
+      }
+
+      .nav-link.inactive {
+        color: var(--text-muted);
+      }
+
+      .nav-link.inactive:hover {
+        color: var(--accent-gold);
+      }
+
+      /* Mobile Hamburger Button */
+      .hamburger-btn {
+        background: none;
+        border: none;
+        color: var(--accent-gold);
+        cursor: pointer;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hamburger-btn svg {
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+
+      /* Mobile Navigation Drawer */
+      .mobile-drawer {
+        display: none;
+        background-color: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem 1.5rem;
+        text-align: center;
+      }
+
+      .mobile-drawer.open {
+        display: block;
+      }
+
+      .mobile-drawer .mobile-link {
+        display: block;
+        padding: 0.75rem 0;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .mobile-drawer .mobile-link.active {
+        color: var(--accent-gold);
+        font-weight: 700;
+      }
+
+      .mobile-drawer .mobile-link.inactive {
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .mobile-drawer .mobile-link.inactive:hover {
+        color: var(--accent-gold);
+      }
+
+      @media (min-width: 768px) {
+        .navbar {
+          padding: 1rem 2rem;
+        }
+        .brand-logo img {
+          height: 4.5rem;
+        }
+        .desktop-nav {
+          display: flex;
+        }
+        .hamburger-btn {
+          display: none;
+        }
+        .mobile-drawer {
+          display: none !important;
+        }
+      }
+
+      main {
+        max-width: 56rem;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 768px) {
+        main {
+          padding: 2.5rem 1.5rem;
+          gap: 2.5rem;
+        }
+      }
+
+      .card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        padding: 1.25rem;
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+      }
+
+      @media (min-width: 768px) {
+        .card {
+          padding: 2rem;
+        }
+      }
+
+      .card-title {
+        color: var(--accent-gold);
+        font-weight: 700;
+        font-size: 1.125rem;
+        margin-bottom: 1.25rem;
+      }
+
+      @media (min-width: 768px) {
+        .card-title {
+          font-size: 1.35rem;
+        }
+      }
+
+      /* Packages Grid */
+      .packages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .package-item {
+        background-color: var(--bg-black-40);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .pkg-name {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--text-main);
+      }
+
+      .pkg-price {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--accent-gold);
+      }
+
+      .pkg-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .btn-gold {
+        background-color: var(--accent-gold);
+        color: #000;
+        font-weight: 700;
+        font-size: 0.875rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        transition:
+          background-color 0.2s ease,
+          transform 0.2s ease;
+        width: 100%;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-gold:hover {
+        background-color: var(--accent-gold-hover);
+        transform: translateY(-1px);
+      }
+
+      /* Manual Booking Inquiry Card */
+      .manual-card {
+        background-color: var(--bg-black-40);
+        border: 1px dashed var(--accent-gold);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      /* Table Container */
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.875rem;
+      }
+
+      th,
+      td {
+        padding: 0.875rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-main);
+      }
+
+      th {
+        color: var(--accent-gold);
+      }
+
+      .badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .badge-pending {
+        background: rgba(234, 179, 8, 0.15);
+        color: #eab308;
+      }
+
+      .badge-green {
+        background: rgba(16, 185, 129, 0.15);
+        color: var(--status-green);
+      }
+
+      .badge-red {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--status-red);
+      }
+
+      /* Modals */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+      }
+
+      .modal-box {
+        background: var(--bg-card);
+        border: 1px solid var(--accent-gold);
+        padding: 2rem;
+        border-radius: 1rem;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .modal-btns {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        flex: 1;
+        cursor: pointer;
+      }
+
+      .star-picker {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 1.5rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        margin: 1rem 0;
+      }
+
+      .star-picker span.selected {
+        color: var(--accent-gold);
+      }
+
+      textarea.form-textarea {
+        width: 100%;
+        background: var(--bg-dark);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        resize: none;
+        height: 90px;
+        margin-bottom: 1rem;
+        outline: none;
+      }
+
+      /* Navigation Overlay Delay Screen */
+      #nav-loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(4px);
+        z-index: 2000;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-gold);
+      }
+      #nav-loading-overlay.active {
+        display: flex;
+      }
+      .spinner {
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 3px solid rgba(212, 175, 55, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--accent-gold);
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 1rem;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Page Transition Overlay -->
+    <div id="nav-loading-overlay">
+      <div class="spinner"></div>
+      <p style="font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em">
+        Loading section...
+      </p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <a onclick="delayedNavigate('client-home.html')" class="brand-logo">
+        <img src="../images/logo.png" alt="Logo" />
+        <span>PxByPeniel</span>
+      </a>
+
+      <!-- Desktop Links -->
+      <div class="desktop-nav">
+        <a
+          onclick="delayedNavigate('client-home.html')"
+          class="nav-link inactive"
+          >About</a
+        >
+        <a
+          onclick="delayedNavigate('client-gallery.html')"
+          class="nav-link inactive"
+          >Gallery</a
+        >
+        <a
+          onclick="delayedNavigate('client-bookings.html')"
+          class="nav-link active"
+          >Bookings</a
+        >
+        <a
+          onclick="delayedNavigate('client-account.html')"
+          class="nav-link inactive"
+          >Account</a
+        >
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button
+        id="mobile-menu-btn"
+        class="hamburger-btn"
+        aria-label="Toggle Navigation Menu"
+      >
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="mobile-drawer">
+      <a
+        onclick="delayedNavigate('client-home.html')"
+        class="mobile-link inactive"
+        >About</a
+      >
+      <a
+        onclick="delayedNavigate('client-gallery.html')"
+        class="mobile-link inactive"
+        >Gallery</a
+      >
+      <a
+        onclick="delayedNavigate('client-bookings.html')"
+        class="mobile-link active"
+        >Bookings</a
+      >
+      <a
+        onclick="delayedNavigate('client-account.html')"
+        class="mobile-link inactive"
+        >Account</a
+      >
+    </div>
+
+    <!-- Main Content Container -->
+    <main>
+      <!-- 1. Available Packages Loaded from Admin -->
+      <section class="card">
+        <h2 class="card-title">Available Studio Packages</h2>
+        <div class="packages-grid" id="clientPackagesGrid">
+          <p style="color: var(--text-muted); font-style: italic">
+            Loading admin packages...
+          </p>
+        </div>
+      </section>
+
+      <!-- 2. Manual Booking Inquiry Card (WhatsApp Direct) -->
+      <section class="manual-card">
+        <h3
+          style="
+            font-family: inherit;
+            color: var(--accent-gold);
+            font-size: 1.15rem;
+          "
+        >
+          Need a Custom or Bespoke Session?
+        </h3>
+        <p
+          style="
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            max-width: 32rem;
+          "
+        >
+          Prefer speaking with our team directly for custom arrangements? Chat
+          with us on WhatsApp to discuss your unique shoot requirements before
+          manual confirmation.
+        </p>
+        <a
+          href="https://wa.me/2349156065771?text=Hello%20PXByPeniel,%20I%20want%20to%20make%20a%20manual%20booking%20inquiry."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-gold"
+          style="max-width: 260px; margin-top: 0.5rem"
+        >
+          Chat with Admin on WhatsApp
+        </a>
+      </section>
+
+      <!-- 3. Personal Booking History & Live Status -->
+      <section class="card">
+        <h2 class="card-title">Your Bookings & Tracking</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Session ID</th>
+                <th>Package</th>
+                <th>Amount</th>
+                <th>Payment Verified</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="clientBookingsTableBody">
+              <tr>
+                <td
+                  colspan="5"
+                  style="text-align: center; color: var(--text-muted)"
+                >
+                  Loading your sessions...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- PAYMENT INTENT MODAL -->
+    <div class="modal-overlay" id="intentModal">
+      <div class="modal-box">
+        <h3 style="color: var(--accent-gold); margin-bottom: 0.75rem">
+          Proceed to Payment?
+        </h3>
+        <p
+          id="intentModalText"
+          style="
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+          "
+        >
+          Do you want to start paying for this shoot now?
+        </p>
+        <div class="modal-btns">
+          <button class="btn-outline" id="intentNoBtn">No</button>
+          <button class="btn-gold" id="intentYesBtn">Yes, Pay Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERSISTENT MANDATORY REVIEW MODAL -->
+    <div class="modal-overlay" id="reviewModal">
+      <div class="modal-box">
+        <h3 style="color: var(--accent-gold); margin-bottom: 0.5rem">
+          Leave a Review
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted)">
+          Your shoot is completed! Please leave a review to share your feedback.
+        </p>
+        <div class="star-picker" id="starPicker">
+          <span data-star="1">★</span>
+          <span data-star="2">★</span>
+          <span data-star="3">★</span>
+          <span data-star="4">★</span>
+          <span data-star="5" class="selected">★</span>
+        </div>
+        <textarea
+          class="form-textarea"
+          id="reviewInput"
+          placeholder="Write your experience here..."
+        ></textarea>
+        <div class="modal-btns">
+          <button class="btn-outline" id="reviewCloseBtn">Close</button>
+          <button class="btn-gold" id="reviewSubmitBtn">Submit Review</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script>
+      // Seamless Navigation Delay
+      function delayedNavigate(targetUrl) {
+        const overlay = document.getElementById("nav-loading-overlay");
+        overlay.classList.add("active");
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 400);
+      }
+
+      // Global Theme Engine
+      function applyTheme(theme) {
+        if (theme === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else if (theme === "dark") {
+          document.documentElement.removeAttribute("data-theme");
+        } else {
+          if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: light)").matches
+          ) {
+            document.documentElement.setAttribute("data-theme", "light");
+          } else {
+            document.documentElement.removeAttribute("data-theme");
+          }
+        }
+      }
+      const savedTheme = localStorage.getItem("px_theme") || "system";
+      applyTheme(savedTheme);
+
+      // Mobile Drawer Toggle
+      const menuBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      menuBtn.addEventListener("click", () =>
+        mobileMenu.classList.toggle("open"),
+      );
+
+      const SUPABASE_URL = "https://kplwvidpctgjwkxsabov.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "sb_publishable_ggIovP3ZABeeHr-kIyUy7g_f_Vcy_4k";
+      const PAYSTACK_PUBLIC_KEY =
+        "pk_test_b859a117b38b4c0d15b2203dcf5095e0c6a5bb15";
+
+      const supabaseClient = window.supabase
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+        : null;
+
+      let selectedPackageData = null;
+      let selectedRating = 5;
+      let pendingReviewBookingId = null;
+
+      async function fetchClientPackages() {
+        if (!supabaseClient) return;
+        const { data: pkgs } = await supabaseClient
+          .from("studio_packages")
+          .select("*")
+          .order("created_at", { ascending: false });
+        const grid = document.getElementById("clientPackagesGrid");
+
+        if (!pkgs || pkgs.length === 0) {
+          grid.innerHTML = `<p style="color:var(--text-muted)">No packages uploaded by the admin yet.</p>`;
+          return;
+        }
+
+        grid.innerHTML = pkgs
+          .map(
+            (p) => `
+          <div class="package-item">
+            <div>
+              <div class="pkg-name">${escapeHtml(p.name)}</div>
+              <div class="pkg-price">₦${Number(p.price).toLocaleString()}</div>
+              <div class="pkg-meta">📍 ${escapeHtml(p.location || "Studio")}</div>
+              <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.5rem;">${escapeHtml(p.description || "")}</p>
+            </div>
+            <button class="btn-gold" onclick="promptBookingIntent('${p.id}', '${escapeHtml(p.name)}', ${p.price})">Select Package</button>
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      function promptBookingIntent(id, name, price) {
+        selectedPackageData = { id, name, price };
+        document.getElementById("intentModalText").textContent =
+          `Selected "${name}" (₦${Number(price).toLocaleString()}). Do you want to start paying now?`;
+        document.getElementById("intentModal").style.display = "flex";
+      }
+
+      document.getElementById("intentNoBtn").addEventListener("click", () => {
+        document.getElementById("intentModal").style.display = "none";
+      });
+
+      document
+        .getElementById("intentYesBtn")
+        .addEventListener("click", async () => {
+          document.getElementById("intentModal").style.display = "none";
+          const clientName = localStorage.getItem("px_user_name") || "Client";
+          const clientEmail =
+            localStorage.getItem("px_user_email") || "client@example.com";
+          const sessionCode =
+            "PX-" + Math.floor(100000 + Math.random() * 900000);
+
+          if (supabaseClient) {
+            const { data, error } = await supabaseClient
+              .from("client_bookings")
+              .insert([
+                {
+                  session_id: sessionCode,
+                  client_name: clientName,
+                  client_email: clientEmail,
+                  package_name: selectedPackageData.name,
+                  amount: selectedPackageData.price,
+                  status: "Pending",
+                  verified: false,
+                },
+              ])
+              .select();
+
+            if (!error && data && data.length > 0) {
+              launchPaystack(data[0]);
+            } else {
+              alert(
+                "Error initiating booking: " + (error ? error.message : ""),
+              );
+            }
+          }
+        });
+
+      function launchPaystack(booking) {
+        const handler = PaystackPop.setup({
+          key: PAYSTACK_PUBLIC_KEY,
+          email: booking.client_email,
+          amount: booking.amount * 100,
+          currency: "NGN",
+          ref: booking.session_id,
+          onClose: () => {
+            alert("Payment window closed. Booking saved as Pending.");
+            fetchClientBookings();
+          },
+          callback: async (response) => {
+            if (supabaseClient) {
+              await supabaseClient
+                .from("client_bookings")
+                .update({ verified: true, payment_ref: response.reference })
+                .eq("id", booking.id);
+            }
+            alert("Payment successful! Verification passed.");
+            fetchClientBookings();
+          },
+        });
+        handler.openIframe();
+      }
+
+      async function fetchClientBookings() {
+        if (!supabaseClient) return;
+        const clientName = localStorage.getItem("px_user_name") || "Client";
+        const { data: bookings } = await supabaseClient
+          .from("client_bookings")
+          .select("*")
+          .eq("client_name", clientName)
+          .order("created_at", { ascending: false });
+        const tbody = document.getElementById("clientBookingsTableBody");
+
+        if (!bookings || bookings.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted)">No active bookings recorded.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = bookings
+          .map((b) => {
+            const verBadge = b.verified
+              ? `<span class="badge badge-green">Passed (Green)</span>`
+              : `<span class="badge badge-red">Pending (Red)</span>`;
+            let statusBadge = `<span class="badge badge-pending">Pending</span>`;
+            if (b.status === "Completed")
+              statusBadge = `<span class="badge badge-green">Booking Session Successful</span>`;
+
+            return `
+            <tr>
+              <td style="font-weight:700">${b.session_id}</td>
+              <td>${escapeHtml(b.package_name)}</td>
+              <td>₦${Number(b.amount).toLocaleString()}</td>
+              <td>${verBadge}</td>
+              <td>${statusBadge}</td>
+            </tr>
+          `;
+          })
+          .join("");
+
+        checkMandatoryReview(bookings);
+      }
+
+      function checkMandatoryReview(bookings) {
+        const completed = bookings.find(
+          (b) => b.status === "Completed" && !b.reviewed,
+        );
+        if (completed) {
+          pendingReviewBookingId = completed.id;
+          document.getElementById("reviewModal").style.display = "flex";
+        }
+      }
+
+      const stars = document.querySelectorAll("#starPicker span");
+      stars.forEach((s) => {
+        s.addEventListener("click", () => {
+          selectedRating = parseInt(s.getAttribute("data-star"));
+          stars.forEach((st) => {
+            if (parseInt(st.getAttribute("data-star")) <= selectedRating)
+              st.classList.add("selected");
+            else st.classList.remove("selected");
+          });
+        });
+      });
+
+      document
+        .getElementById("reviewCloseBtn")
+        .addEventListener("click", () => {
+          document.getElementById("reviewModal").style.display = "none";
+        });
+
+      document
+        .getElementById("reviewSubmitBtn")
+        .addEventListener("click", async () => {
+          const quote = document.getElementById("reviewInput").value.trim();
+          const clientName = localStorage.getItem("px_user_name") || "Client";
+          if (!quote) {
+            alert("Please type a review before submitting.");
+            return;
+          }
+
+          if (supabaseClient) {
+            const { error } = await supabaseClient
+              .from("client_reviews")
+              .insert([{ author: clientName, quote, rating: selectedRating }]);
+            if (!error) {
+              if (pendingReviewBookingId) {
+                await supabaseClient
+                  .from("client_bookings")
+                  .update({ reviewed: true })
+                  .eq("id", pendingReviewBookingId);
+              }
+              alert(
+                "Review submitted successfully! It is now live on the home page.",
+              );
+              document.getElementById("reviewModal").style.display = "none";
+              fetchClientBookings();
+            } else {
+              alert("Error: " + error.message);
+            }
+          }
+        });
+
+      function escapeHtml(str) {
+        return str
+          ? str
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+          : "";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        fetchClientPackages();
+        fetchClientBookings();
+      });
+    </script>
+  </body>
+</html>

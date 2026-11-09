@@ -1,0 +1,1180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PXByPeniel | Photography Showcase</title>
+    <!-- Google Fonts for Luxury Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-primary: #0a0b0d;
+        --bg-secondary: #121418;
+        --bg-card: rgba(22, 25, 31, 0.85);
+        --text-main: #f3f4f6;
+        --text-muted: #9ca3af;
+        --gold-primary: #d4af37;
+        --gold-light: #f3e5ab;
+        --gold-glow: rgba(212, 175, 55, 0.2);
+        --accent-yellow: #eab308;
+        --border-color: rgba(212, 175, 55, 0.2);
+        --modal-bg: rgba(10, 11, 13, 0.88);
+        --font-heading: "Cinzel", serif;
+        --font-body: "Plus Jakarta Sans", sans-serif;
+        --transition-speed: 0.8s;
+      }
+
+      [data-theme="light"] {
+        --bg-primary: #f8f9fa;
+        --bg-secondary: #edeef0;
+        --bg-card: rgba(255, 255, 255, 0.9);
+        --text-main: #111827;
+        --text-muted: #4b5563;
+        --gold-primary: #b8860b;
+        --gold-light: #996515;
+        --gold-glow: rgba(184, 134, 11, 0.15);
+        --accent-yellow: #ca8a04;
+        --border-color: rgba(184, 134, 11, 0.3);
+        --modal-bg: rgba(248, 249, 250, 0.92);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+      }
+
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-main);
+        font-family: var(--font-body);
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition:
+          background-color 0.4s ease,
+          color 0.4s ease;
+      }
+
+      /* Ambient Luxury Glow Background */
+      .ambient-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          radial-gradient(
+            circle at 15% 20%,
+            var(--gold-glow) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 85% 80%,
+            rgba(234, 179, 8, 0.08) 0%,
+            transparent 40%
+          );
+        filter: blur(40px);
+      }
+
+      /* --- REDUCED COMPACT HEADER --- */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 55px;
+        padding: 0 4%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 100;
+        background: rgba(10, 11, 13, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .brand-container {
+        display: flex;
+        align-items: center;
+        flex: 0 1 auto;
+        gap: 10px;
+      }
+
+      .brand-logo-img {
+        height: 38px;
+        width: auto;
+        object-fit: contain;
+      }
+
+      .brand-name {
+        font-family: var(--font-heading);
+        font-size: 1.15rem;
+        font-weight: 600;
+        letter-spacing: 1.2px;
+        color: var(--text-main);
+        white-space: nowrap;
+      }
+
+      .theme-toggle-btn {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 6px 14px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .theme-toggle-btn:hover {
+        border-color: var(--gold-primary);
+        box-shadow: 0 0 10px var(--gold-glow);
+      }
+
+      .theme-svg {
+        transition:
+          transform 0.3s ease,
+          stroke 0.3s ease;
+        display: block;
+      }
+
+      .theme-toggle-btn:hover .theme-svg {
+        transform: rotate(15deg);
+        stroke: var(--gold-primary);
+      }
+
+      /* --- MAIN PRESENTATION SLIDER --- */
+      .slider-viewport {
+        position: relative;
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+        margin-top: 55px; /* Matches 55px header */
+        margin-bottom: 55px; /* Matches 55px footer */
+      }
+
+      .slides-container {
+        display: flex;
+        width: 400%;
+        height: 100%;
+        transition: transform var(--transition-speed)
+          cubic-bezier(0.65, 0, 0.35, 1);
+      }
+
+      .slide {
+        width: 25%;
+        height: 100%;
+        padding: 60px 4% 65px 4%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        opacity: 0.3;
+        transform: scale(0.97);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+        overflow-y: auto !important;
+        touch-action: pan-y !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+
+      /* When slide content exceeds screen height (like the photo gallery), align from top */
+      .slide.gallery-slide {
+        justify-content: flex-start;
+        padding-top: 50px;
+      }
+
+      .slide.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* Slide Typography */
+      .slide-tag {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--gold-primary);
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+
+      .slide-title {
+        font-family: var(--font-heading);
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        line-height: 1.15;
+        margin-bottom: 10px;
+        max-width: 800px;
+        background: linear-gradient(
+          135deg,
+          var(--text-main) 60%,
+          var(--gold-primary)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .slide-description {
+        font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+        color: var(--text-muted);
+        max-width: 620px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+      }
+
+      /* --- SINGLE ROW 4-PHOTO SHOWCASE GALLERY --- */
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 15px auto;
+      }
+
+      .photo-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        height: 320px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 16px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      }
+
+      .photo-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--gold-primary);
+        box-shadow: 0 12px 30px var(--gold-glow);
+      }
+
+      .photo-card-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center 20%;
+        filter: brightness(0.75);
+        transition:
+          transform 0.6s ease,
+          filter 0.6s ease;
+      }
+
+      .photo-card:hover .photo-card-bg {
+        transform: scale(1.08);
+        filter: brightness(0.95);
+      }
+
+      .photo-info {
+        position: relative;
+        z-index: 2;
+        text-align: left;
+        background: rgba(10, 11, 13, 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .photo-title {
+        font-family: var(--font-heading);
+        font-size: 0.95rem;
+        color: #ffffff;
+        margin-bottom: 2px;
+      }
+
+      .photo-category {
+        font-size: 0.75rem;
+        color: var(--gold-light);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .see-more-wrapper {
+        margin-top: 15px;
+        margin-bottom: 45px;
+      }
+
+      /* Buttons & Links */
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(
+          135deg,
+          var(--gold-primary),
+          var(--accent-yellow)
+        );
+        color: #0a0b0d;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 12px 28px;
+        border-radius: 40px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 18px var(--gold-glow);
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+      }
+
+      .btn-link {
+        color: var(--gold-primary);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition:
+          gap 0.3s ease,
+          color 0.3s ease;
+      }
+
+      .btn-link:hover {
+        gap: 10px;
+        color: var(--gold-light);
+      }
+      /* Slide Indicators */
+      .slide-dots {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 20;
+      }
+
+      .dot {
+        width: 25px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+      }
+
+      .dot.active {
+        background: var(--gold-primary);
+        width: 40px;
+      }
+
+      /* --- REDUCED COMPACT FOOTER --- */
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 55px;
+        padding: 0 4%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 100;
+        background: rgba(10, 11, 13, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border-color);
+      }
+
+      .legal-links {
+        display: flex;
+        gap: 16px;
+      }
+
+      .legal-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .legal-btn:hover {
+        color: var(--gold-primary);
+      }
+
+      .legal-btn.accepted::after {
+        content: " ✓";
+        color: #10b981;
+        font-weight: bold;
+      }
+
+      .copyright {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+
+      /* --- LIGHTBOX & MODAL OVERLAYS --- */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(10px);
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-box {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 500px;
+        padding: 24px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+      }
+
+      .modal-overlay.active .modal-box {
+        transform: translateY(0);
+      }
+
+      .modal-title {
+        font-family: var(--font-heading);
+        font-size: 1.25rem;
+        color: var(--gold-primary);
+        margin-bottom: 10px;
+      }
+
+      .modal-body {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin-bottom: 20px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .btn-secondary {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 8px 18px;
+        border-radius: 25px;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-accept {
+        background: var(--gold-primary);
+        border: none;
+        color: #0a0b0d;
+        font-weight: 600;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-size: 0.82rem;
+        cursor: pointer;
+      }
+
+      /* --- FULL-VIEWPORT LIGHTBOX IMAGE DISPLAY --- */
+      .lightbox-box {
+        position: relative;
+        max-width: 90vw;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .lightbox-img {
+        max-width: 100%;
+        max-height: 75vh;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        border: 1px solid var(--border-color);
+        object-fit: contain;
+      }
+
+      .lightbox-caption {
+        margin-top: 14px;
+        text-align: center;
+      }
+
+      .lightbox-title {
+        font-family: var(--font-heading);
+        font-size: 1.2rem;
+        color: #ffffff;
+      }
+
+      .lightbox-category {
+        font-size: 0.8rem;
+        color: var(--gold-primary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 2px;
+      }
+
+      .lightbox-close-btn {
+        position: absolute;
+        top: -45px;
+        right: 0;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .lightbox-close-btn:hover {
+        border-color: var(--gold-primary);
+        color: var(--gold-primary);
+      }
+
+      /* --- RESPONSIVE MEDIA QUERIES --- */
+      @media (max-width: 900px) {
+        .gallery-grid {
+          grid-template-columns: repeat(2, 1fr);
+          max-width: 500px;
+          gap: 12px;
+          width: 100%;
+          padding: 0 10px;
+          box-sizing: border-box;
+        }
+        .photo-card {
+          height: 220px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        header {
+          padding: 0 4%;
+        }
+        footer {
+          padding: 0 4%;
+          justify-content: center !important;
+          text-align: center !important;
+        }
+        .legal-links {
+          gap: 12px !important;
+          justify-content: center !important;
+          width: 100% !important;
+        }
+        .slide {
+          padding: 50px 4% 95px 4% !important;
+        }
+        .slide.gallery-slide {
+          padding-top: 40px !important;
+        }
+        .brand-name {
+          font-size: 1rem;
+        }
+        .legal-btn {
+          font-size: 0.72rem !important;
+        }
+        .copyright {
+          display: none;
+        }
+        .see-more-wrapper {
+          margin-bottom: 55px !important;
+        }
+        .gallery-grid {
+          grid-template-columns: 1fr !important;
+          max-width: 100% !important;
+          gap: 20px !important;
+          margin-top: 10px !important;
+        }
+        .photo-card {
+          height: 280px !important;
+        }
+        .slide-title {
+          font-size: 1.5rem;
+        }
+        .slide-description {
+          font-size: 0.82rem;
+        }
+      }
+
+      .luxury-bg-section {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .luxury-bg-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(10, 11, 13, 0.85) 0%,
+          rgba(10, 11, 13, 0.7) 100%
+        );
+        z-index: 1;
+      }
+      .luxury-bg-section > * {
+        position: relative;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient-bg"></div>
+
+    <!-- COMPACT PERSISTENT HEADER (No Navigation Links) -->
+    <header>
+      <div class="brand-container">
+        <img src="images/logo.png" alt="PXByPeniel_" class="brand-logo-img" />
+        <span class="brand-name">PXByPeniel</span>
+      </div>
+      <button
+        class="theme-toggle-btn"
+        id="themeToggleBtn"
+        aria-label="Toggle Theme"
+      >
+        <svg
+          id="themeIcon"
+          class="theme-svg"
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <span id="themeText">Dark</span>
+      </button>
+    </header>
+
+    <!-- FULLSCREEN AUTO-SWIPING SLIDER SECTION -->
+    <main class="slider-viewport" id="sliderViewport">
+      <div class="slides-container" id="slidesContainer">
+        <!-- SLIDE 1: HERO -->
+        <section
+          class="slide active luxury-bg-section"
+          style="background-image: url(images/luxury.jpg)"
+        >
+          <div class="slide-tag">Editorial & Luxury</div>
+          <h1 class="slide-title">Capturing Beauty In Every Shot</h1>
+          <p class="slide-description">
+            Welcome to PXByPeniel. We capture beauty, emotional essence and
+            timeless elegance with refined artistic style.
+          </p>
+        </section>
+
+        <!-- SLIDE 2: PHILOSOPHY -->
+        <section class="slide">
+          <div class="slide-tag">Our Vision</div>
+          <h2 class="slide-title">Precision in Every Single Frame</h2>
+          <p class="slide-description">
+            Every photograph tells a story of elegance and depth. Designed for
+            luxury brands, high-profile portraits, and unforgettable moments.
+          </p>
+        </section>
+
+        <!-- SLIDE 3: 4-PHOTO SHOWCASE (Single Row Desktop Grid, Vertical Scroll Mobile) -->
+        <section class="slide gallery-slide">
+          <div class="slide-tag">Curated Portfolio</div>
+          <h2
+            class="slide-title"
+            style="font-size: clamp(1.4rem, 3vw, 2.2rem); margin-bottom: 5px"
+          >
+            Photos
+          </h2>
+
+          <div class="gallery-grid">
+            <div
+              class="photo-card"
+              data-img="images/img1.jpeg"
+              data-title="Brown Skin Girl"
+              data-category="Face Card"
+            >
+              <div
+                class="photo-card-bg"
+                style="background-image: url(images/img1.jpeg)"
+              ></div>
+              <div class="photo-info">
+                <div class="photo-title">Brown Skin Girl</div>
+                <div class="photo-category">Face Card</div>
+              </div>
+            </div>
+            <div
+              class="photo-card"
+              data-img="images/img3.jpeg"
+              data-title="Beauty In Black"
+              data-category="Aura Portrait"
+            >
+              <div
+                class="photo-card-bg"
+                style="background-image: url(images/img3.jpeg)"
+              ></div>
+              <div class="photo-info">
+                <div class="photo-title">Beauty In Black</div>
+                <div class="photo-category">Aura Portrait</div>
+              </div>
+            </div>
+            <div
+              class="photo-card"
+              data-img="images/img5.jpeg"
+              data-title="Even Tone"
+              data-category="Beauty Commercials"
+            >
+              <div
+                class="photo-card-bg"
+                style="background-image: url(images/img5.jpeg)"
+              ></div>
+              <div class="photo-info">
+                <div class="photo-title">Even Tone</div>
+                <div class="photo-category">Beauty Commercials</div>
+              </div>
+            </div>
+            <div
+              class="photo-card"
+              data-img="images/img7.jpeg"
+              data-title="Traditional Essence"
+              data-category="Culture"
+            >
+              <div
+                class="photo-card-bg"
+                style="background-image: url(images/img7.jpeg)"
+              ></div>
+              <div class="photo-info">
+                <div class="photo-title">Traditional Essence</div>
+                <div class="photo-category">Culture</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="see-more-wrapper">
+            <a
+              href="client-page/client-login.html"
+              class="btn-link protected-link"
+              >See More →</a
+            >
+          </div>
+        </section>
+
+        <!-- SLIDE 4: GET STARTED -->
+        <section class="slide">
+          <div class="slide-tag">Client Gateway</div>
+          <h2 class="slide-title">Ready to Capture?</h2>
+          <p class="slide-description">
+            Create an acconunt to gain access to the site, view the picture
+            archives and schedule your upcoming editorial session today.
+          </p>
+          <div style="margin-top: 10px">
+            <button class="btn-primary protected-link">Get Started</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- Slide Indicators -->
+      <div class="slide-dots">
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+        <div class="dot" data-index="2"></div>
+        <div class="dot" data-index="3"></div>
+      </div>
+    </main>
+
+    <!-- COMPACT PERSISTENT FOOTER -->
+    <footer>
+      <div class="legal-links">
+        <button class="legal-btn" id="termsBtn">Terms & Conditions</button>
+        <button class="legal-btn" id="privacyBtn">Privacy Policy</button>
+        <button class="legal-btn" id="agreementBtn">User Agreement</button>
+      </div>
+      <div class="copyright">© 2026 PXByPeniel. All rights reserved.</div>
+    </footer>
+
+    <!-- LIGHTBOX IMAGE DISPLAY MODAL -->
+    <div class="modal-overlay" id="lightboxModal">
+      <div class="lightbox-box">
+        <button class="lightbox-close-btn" id="lightboxCloseBtn">×</button>
+        <img
+          src=""
+          alt="Showcase Preview"
+          class="lightbox-img"
+          id="lightboxImg"
+        />
+        <div class="lightbox-caption">
+          <div class="lightbox-title" id="lightboxTitle"></div>
+          <div class="lightbox-category" id="lightboxCategory"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEGAL MODAL DIALOG -->
+    <div class="modal-overlay" id="legalModal">
+      <div class="modal-box">
+        <h3 class="modal-title" id="modalTitle">Legal Title</h3>
+        <div class="modal-body" id="modalBody">
+          Legal terms content loads here...
+        </div>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
+          <button class="btn-accept" id="modalAcceptBtn">I Accept</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANDATORY AGREEMENT WARNING DIALOG -->
+    <div class="modal-overlay" id="warningModal">
+      <div class="modal-box" style="text-align: center">
+        <h3 class="modal-title" style="color: var(--accent-yellow)">
+          Action Required
+        </h3>
+        <p
+          style="
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+            line-height: 1.6;
+          "
+        >
+          Before proceeding to the login page, you must accept our
+          <strong>Terms & Conditions</strong>, <strong>Privacy Policy</strong>,
+          and <strong>User Agreement</strong> located at the bottom of the page.
+        </p>
+        <button
+          class="btn-primary"
+          id="warningCloseBtn"
+          style="width: 100%; justify-content: center"
+        >
+          Review & Accept Terms
+        </button>
+      </div>
+    </div>
+
+    <!-- VANILLA JAVASCRIPT LOGIC -->
+    <script>
+      // State Management
+      let currentSlide = 0;
+      const totalSlides = 4;
+      let slideInterval;
+      let isPaused = false;
+
+      const legalContents = {
+        terms: {
+          title: "Terms & Conditions",
+          content:
+            "Welcome to PXByPeniel. By accessing our services, you agree to comply with our booking schedules, copyright standards, and high-resolution media licensing requirements. Payments are non-refundable upon final shoot confirmation.",
+        },
+        privacy: {
+          title: "Privacy Policy",
+          content:
+            "We handle your pictures with utmost care. Your personal information and session metadata will never be shared or sold to third-party advertisers, but an exception to be posted on our social media handles tagging you as the user.",
+        },
+        agreement: {
+          title: "User Agreement",
+          content:
+            "Users agree to respect intellectual property rights. Downloaded images from the user/client portal are licensed for personal and approved commercial use only as detailed in your studio service contract.",
+        },
+      };
+
+      let activeLegalKey = null;
+
+      // Elements
+      const slidesContainer = document.getElementById("slidesContainer");
+      const slides = document.querySelectorAll(".slide");
+      const dots = document.querySelectorAll(".dot");
+
+      // Theme Toggle Elements
+      const moonSvgPath =
+        '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+      const sunSvgPath =
+        '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+
+      const themeToggleBtn = document.getElementById("themeToggleBtn");
+      const themeIcon = document.getElementById("themeIcon");
+      const themeText = document.getElementById("themeText");
+
+      // Lightbox Elements
+      const lightboxModal = document.getElementById("lightboxModal");
+      const lightboxImg = document.getElementById("lightboxImg");
+      const lightboxTitle = document.getElementById("lightboxTitle");
+      const lightboxCategory = document.getElementById("lightboxCategory");
+      const lightboxCloseBtn = document.getElementById("lightboxCloseBtn");
+      const photoCards = document.querySelectorAll(".photo-card");
+
+      // Modal Elements
+      const legalModal = document.getElementById("legalModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalBody = document.getElementById("modalBody");
+      const modalCancelBtn = document.getElementById("modalCancelBtn");
+      const modalAcceptBtn = document.getElementById("modalAcceptBtn");
+      const warningModal = document.getElementById("warningModal");
+      const warningCloseBtn = document.getElementById("warningCloseBtn");
+
+      // Buttons
+      const termsBtn = document.getElementById("termsBtn");
+      const privacyBtn = document.getElementById("privacyBtn");
+      const agreementBtn = document.getElementById("agreementBtn");
+      const protectedLinks = document.querySelectorAll(".protected-link");
+
+      // SVG Theme Toggle Functionality
+      themeToggleBtn.addEventListener("click", () => {
+        const currentTheme = document.body.getAttribute("data-theme");
+        if (currentTheme === "light") {
+          document.body.removeAttribute("data-theme");
+          themeIcon.innerHTML = moonSvgPath;
+          themeText.textContent = "Dark";
+        } else {
+          document.body.setAttribute("data-theme", "light");
+          themeIcon.innerHTML = sunSvgPath;
+          themeText.textContent = "Light";
+        }
+      });
+
+      // Slide Navigation Logic
+      function goToSlide(index) {
+        currentSlide = (index + totalSlides) % totalSlides;
+        slidesContainer.style.transform = `translateX(-${currentSlide * 25}%)`;
+
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("active", i === currentSlide);
+        });
+
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === currentSlide);
+        });
+      }
+
+      function nextSlide() {
+        if (!isPaused) {
+          goToSlide(currentSlide + 1);
+        }
+      }
+
+      // Auto-rotation (5 Seconds Loop)
+      function startAutoSlide() {
+        stopAutoSlide();
+        slideInterval = setInterval(nextSlide, 5000);
+      }
+
+      function stopAutoSlide() {
+        if (slideInterval) clearInterval(slideInterval);
+      }
+
+      startAutoSlide();
+
+      // Pause on Hover
+      const viewport = document.getElementById("sliderViewport");
+      viewport.addEventListener("mouseenter", () => (isPaused = true));
+      viewport.addEventListener("mouseleave", () => (isPaused = false));
+
+      // Dot Navigation
+      dots.forEach((dot) => {
+        dot.addEventListener("click", (e) => {
+          const index = parseInt(e.target.getAttribute("data-index"));
+          goToSlide(index);
+        });
+      });
+
+      // Keyboard Arrow Navigation (Left/Right keys to change slides)
+      document.addEventListener("keydown", (e) => {
+        // Prevent sliding if user is typing in inputs or if another modal is open
+        if (e.key === "ArrowRight") {
+          goToSlide(currentSlide + 1);
+        } else if (e.key === "ArrowLeft") {
+          goToSlide(currentSlide - 1);
+        }
+      });
+
+      // Horizontal Touch Swipe Gestures (filtering out vertical scrolling inside slides)
+      let touchStartX = 0;
+      let touchStartY = 0;
+      viewport.addEventListener(
+        "touchstart",
+        (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        },
+        { passive: true },
+      );
+      viewport.addEventListener("touchend", (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const deltaX = touchStartX - touchEndX;
+        const deltaY = touchStartY - touchEndY;
+
+        // Trigger horizontal slide change ONLY if horizontal swipe dominates vertical scrolling
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+          if (deltaX > 0) goToSlide(currentSlide + 1);
+          else goToSlide(currentSlide - 1);
+        }
+      });
+
+      // Lightbox Click Event (View Full Picture)
+      photoCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          const imgSrc = card.getAttribute("data-img");
+          const title = card.getAttribute("data-title");
+          const category = card.getAttribute("data-category");
+
+          lightboxImg.src = imgSrc;
+          lightboxTitle.textContent = title;
+          lightboxCategory.textContent = category;
+
+          lightboxModal.classList.add("active");
+          isPaused = true;
+        });
+      });
+
+      function closeLightbox() {
+        lightboxModal.classList.remove("active");
+        isPaused = false;
+      }
+
+      lightboxCloseBtn.addEventListener("click", closeLightbox);
+      lightboxModal.addEventListener("click", (e) => {
+        if (e.target === lightboxModal || e.target === lightboxImg) {
+          closeLightbox();
+        }
+      });
+
+      // Open Legal Dialog Modal
+      function openLegalModal(key) {
+        activeLegalKey = key;
+        modalTitle.textContent = legalContents[key].title;
+        modalBody.textContent = legalContents[key].content;
+        legalModal.classList.add("active");
+        isPaused = true;
+      }
+
+      termsBtn.addEventListener("click", () => openLegalModal("terms"));
+      privacyBtn.addEventListener("click", () => openLegalModal("privacy"));
+      agreementBtn.addEventListener("click", () => openLegalModal("agreement"));
+
+      modalCancelBtn.addEventListener("click", () => {
+        legalModal.classList.remove("active");
+        isPaused = false;
+      });
+
+      // Close Warning Modal when clicking "Review & Accept Terms"
+      warningCloseBtn.addEventListener("click", () => {
+        warningModal.classList.remove("active");
+        isPaused = false;
+      });
+
+      warningModal.addEventListener("click", (e) => {
+        if (e.target === warningModal) {
+          warningModal.classList.remove("active");
+          isPaused = false;
+        }
+      });
+
+      // State management with Local Storage
+      const legalStatus = {
+        terms: localStorage.getItem("px_accepted_terms") === "true",
+        privacy: localStorage.getItem("px_accepted_privacy") === "true",
+        agreement: localStorage.getItem("px_accepted_agreement") === "true",
+      };
+
+      function updateLegalUI() {
+        if (localStorage.getItem("px_accepted_terms") === "true")
+          document.getElementById("termsBtn").classList.add("accepted");
+        if (localStorage.getItem("px_accepted_privacy") === "true")
+          document.getElementById("privacyBtn").classList.add("accepted");
+        if (localStorage.getItem("px_accepted_agreement") === "true")
+          document.getElementById("agreementBtn").classList.add("accepted");
+      }
+      updateLegalUI();
+
+      modalAcceptBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (activeLegalKey) {
+          legalStatus[activeLegalKey] = true;
+          localStorage.setItem(`px_accepted_${activeLegalKey}`, "true");
+          const targetBtn = document.getElementById(`${activeLegalKey}Btn`);
+          if (targetBtn) {
+            targetBtn.classList.add("accepted");
+          }
+        }
+        legalModal.classList.remove("active");
+        isPaused = false;
+        activeLegalKey = null;
+      });
+
+      // Protected Redirect Handling
+      protectedLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const allAccepted =
+            localStorage.getItem("px_accepted_terms") === "true" &&
+            localStorage.getItem("px_accepted_privacy") === "true" &&
+            localStorage.getItem("px_accepted_agreement") === "true";
+
+          if (allAccepted) {
+            // 1. Button press scale & opacity feedback
+            e.currentTarget.style.opacity = "0.85";
+
+            // 3. Navigate smoothly after delay
+            setTimeout(() => {
+              window.location.href = "client-page/client-login.html";
+            }, 1000);
+          } else {
+            warningModal.classList.add("active");
+            isPaused = true;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

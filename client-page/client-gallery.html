@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery & Muses | PXByPeniel Photography</title>
+
+    <!-- FontAwesome 6 for Social Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+      /* CSS Theme Variables (Synced with client-account.html) */
+      :root {
+        --bg-dark: #0a0a0a;
+        --bg-card: #141414;
+        --bg-black-40: rgba(0, 0, 0, 0.4);
+        --border-color: #262626;
+        --border-hover: #d4af37;
+        --accent-gold: #d4af37;
+        --accent-gold-hover: #e5be3e;
+        --text-main: #f3f4f6;
+        --text-muted: #9ca3af;
+        --text-subtle: #6b7280;
+        --font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+      }
+
+      /* Light Theme Variables */
+      [data-theme="light"] {
+        --bg-dark: #f8fafc;
+        --bg-card: #ffffff;
+        --bg-black-40: rgba(241, 245, 249, 0.8);
+        --border-color: #e2e8f0;
+        --border-hover: #d4af37;
+        --text-main: #0f172a;
+        --text-muted: #475569;
+        --text-subtle: #64748b;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        font-family: var(--font-family);
+        min-height: 100vh;
+        line-height: 1.5;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+
+      ::selection {
+        background-color: var(--accent-gold);
+        color: #000;
+      }
+
+      /* Navigation Bar - Fully Responsive */
+      .navbar {
+        background-color: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        padding: 0.875rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition:
+          background-color 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      .brand-logo {
+        color: var(--accent-gold);
+        font-weight: 700;
+        font-size: 1.125rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+      }
+
+      .brand-logo img {
+        height: 3.5rem;
+        width: auto;
+        object-fit: contain;
+      }
+
+      .desktop-nav {
+        display: none;
+        gap: 2rem;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        padding-bottom: 0.25rem;
+        transition: color 0.2s ease;
+        cursor: pointer;
+      }
+
+      .nav-link.active {
+        color: var(--accent-gold);
+        border-bottom: 2px solid var(--accent-gold);
+      }
+
+      .nav-link.inactive {
+        color: var(--text-muted);
+      }
+
+      .nav-link.inactive:hover {
+        color: var(--accent-gold);
+      }
+
+      .hamburger-btn {
+        background: none;
+        border: none;
+        color: var(--accent-gold);
+        cursor: pointer;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hamburger-btn svg {
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+
+      .mobile-drawer {
+        display: none;
+        background-color: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem 1.5rem;
+        text-align: center;
+        transition: background-color 0.3s ease;
+      }
+
+      .mobile-drawer.open {
+        display: block;
+      }
+
+      .mobile-drawer .mobile-link {
+        display: block;
+        padding: 0.75rem 0;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .mobile-drawer .mobile-link.active {
+        color: var(--accent-gold);
+        font-weight: 700;
+      }
+
+      .mobile-drawer .mobile-link.inactive {
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .mobile-drawer .mobile-link.inactive:hover {
+        color: var(--accent-gold);
+      }
+
+      @media (min-width: 768px) {
+        .navbar {
+          padding: 1rem 2rem;
+        }
+        .brand-logo img {
+          height: 4.5rem;
+        }
+        .brand-logo {
+          font-size: 1.25rem;
+        }
+        .desktop-nav {
+          display: flex;
+        }
+        .hamburger-btn {
+          display: none;
+        }
+        .mobile-drawer {
+          display: none !important;
+        }
+      }
+
+      /* Main Container */
+      main {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+      }
+
+      @media (min-width: 768px) {
+        main {
+          padding: 2.5rem 1.5rem;
+          gap: 3.5rem;
+        }
+      }
+
+      /* 1. Giant Quote Spotlight Box (Hero Screen) */
+      .spotlight-box {
+        position: relative;
+        min-height: 420px;
+        border-radius: 1rem;
+        background-size: cover;
+        background-position: center;
+        background-color: var(--bg-card);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+      }
+
+      .spotlight-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.3) 0%,
+          rgba(0, 0, 0, 0.85) 100%
+        );
+      }
+
+      .spotlight-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 850px;
+        padding: 2rem;
+      }
+
+      .spotlight-content blockquote {
+        font-size: 2rem;
+        font-style: italic;
+        font-weight: 300;
+        color: #ffffff;
+        margin-bottom: 1rem;
+        line-height: 1.35;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+      }
+
+      .spotlight-content p {
+        color: var(--accent-gold);
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      @media (max-width: 600px) {
+        .spotlight-box {
+          min-height: 320px;
+        }
+        .spotlight-content blockquote {
+          font-size: 1.5rem;
+        }
+      }
+
+      /* 2. Category Filter Bar */
+      .filter-section {
+        display: flex;
+        justify-content: center;
+      }
+
+      .filter-container {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .filter-btn {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        padding: 0.625rem 1.25rem;
+        border-radius: 2rem;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+      }
+
+      .filter-btn.active,
+      .filter-btn:hover {
+        background-color: var(--accent-gold);
+        color: #000000;
+        border-color: var(--accent-gold);
+        transform: translateY(-1px);
+      }
+
+      /* 3. Masonry Gallery Grid */
+      .gallery-masonry {
+        column-count: 3;
+        column-gap: 1.5rem;
+      }
+
+      @media (max-width: 900px) {
+        .gallery-masonry {
+          column-count: 2;
+        }
+      }
+      @media (max-width: 600px) {
+        .gallery-masonry {
+          column-count: 1;
+        }
+      }
+
+      .gallery-item {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+        position: relative;
+        border-radius: 1rem;
+        overflow: hidden;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      }
+
+      .gallery-item img {
+        width: 100%;
+        display: block;
+        border-radius: 1rem;
+        transition: transform 0.4s ease;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.04);
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.85) 0%,
+          rgba(0, 0, 0, 0) 70%
+        );
+        opacity: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 1.25rem;
+        transition: opacity 0.3s ease;
+      }
+
+      .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+      }
+
+      .gallery-overlay h3 {
+        color: #ffffff;
+        font-size: 1.125rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .gallery-overlay span {
+        color: var(--accent-gold);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+      }
+
+      /* 4. Featured Models Directory */
+      .section-title {
+        color: var(--accent-gold);
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        letter-spacing: 0.05em;
+      }
+
+      .models-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.75rem;
+      }
+
+      .model-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.75rem 1.25rem;
+        text-align: center;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .model-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent-gold);
+      }
+
+      .model-card img {
+        width: 7.5rem;
+        height: 7.5rem;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--accent-gold);
+        margin-bottom: 1rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      }
+
+      .model-card h3 {
+        font-size: 1.125rem;
+        color: var(--text-main);
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+
+      .model-socials {
+        display: flex;
+        justify-content: center;
+        gap: 1.25rem;
+      }
+
+      .model-socials a {
+        color: var(--text-muted);
+        font-size: 1.25rem;
+        transition:
+          color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .model-socials a:hover {
+        transform: scale(1.15);
+      }
+      .model-socials a.instagram:hover {
+        color: #e1306c;
+      }
+      .model-socials a.tiktok:hover {
+        color: #00f2fe;
+      }
+      .model-socials a.whatsapp:hover {
+        color: #25d366;
+      }
+
+      /* Empty States */
+      .empty-state {
+        text-align: center;
+        padding: 4rem 1rem;
+        color: var(--text-muted);
+        grid-column: 1 / -1;
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        color: var(--accent-gold);
+        margin-bottom: 1rem;
+      }
+
+      /* Lightbox Modal */
+      .lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.92);
+        backdrop-filter: blur(10px);
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 2rem;
+      }
+
+      .lightbox img {
+        max-width: 90vw;
+        max-height: 80vh;
+        border-radius: 0.75rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.8);
+        object-fit: contain;
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: 1.5rem;
+        right: 2rem;
+        font-size: 2.5rem;
+        color: #fff;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      .lightbox-caption {
+        color: var(--text-muted);
+        margin-top: 1.25rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      /* Navigation Overlay Delay Screen */
+      #nav-loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(4px);
+        z-index: 2000;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-gold);
+      }
+      #nav-loading-overlay.active {
+        display: flex;
+      }
+      .spinner {
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 3px solid rgba(212, 175, 55, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--accent-gold);
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 1rem;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Page Transition Overlay -->
+    <div id="nav-loading-overlay">
+      <div class="spinner"></div>
+      <p style="font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em">
+        Loading section...
+      </p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <a onclick="delayedNavigate('client-home.html')" class="brand-logo">
+        <img src="../images/logo.png" alt="Logo" />
+        <span>PxByPeniel</span>
+      </a>
+
+      <div class="desktop-nav">
+        <a
+          onclick="delayedNavigate('client-home.html')"
+          class="nav-link inactive"
+          >About</a
+        >
+        <a
+          onclick="delayedNavigate('client-gallery.html')"
+          class="nav-link active"
+          >Gallery</a
+        >
+        <a
+          onclick="delayedNavigate('client-bookings.html')"
+          class="nav-link inactive"
+          >Bookings</a
+        >
+        <a
+          onclick="delayedNavigate('client-account.html')"
+          class="nav-link inactive"
+          >Account</a
+        >
+      </div>
+
+      <button
+        id="mobile-menu-btn"
+        class="hamburger-btn"
+        aria-label="Toggle Navigation Menu"
+      >
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="mobile-drawer">
+      <a
+        onclick="delayedNavigate('client-home.html')"
+        class="mobile-link inactive"
+        >About</a
+      >
+      <a
+        onclick="delayedNavigate('client-gallery.html')"
+        class="mobile-link active"
+        >Gallery</a
+      >
+      <a
+        onclick="delayedNavigate('client-bookings.html')"
+        class="mobile-link inactive"
+        >Bookings</a
+      >
+      <a
+        onclick="delayedNavigate('client-account.html')"
+        class="mobile-link inactive"
+        >Account</a
+      >
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <!-- 1. Giant Quote Spotlight Box (Hero Screen) -->
+      <section class="spotlight-box" id="spotlightBox">
+        <div class="spotlight-overlay"></div>
+        <div class="spotlight-content">
+          <blockquote id="spotlightQuote">
+            "Capturing timeless elegance through every frame."
+          </blockquote>
+          <p id="spotlightSubtitle">— PXByPeniel Photography</p>
+        </div>
+      </section>
+
+      <!-- 2. Category Filter Bar -->
+      <section class="filter-section">
+        <div class="filter-container">
+          <button class="filter-btn active" data-filter="all">All Work</button>
+          <button class="filter-btn" data-filter="portraits">Portraits</button>
+          <button class="filter-btn" data-filter="weddings">Weddings</button>
+          <button class="filter-btn" data-filter="fashion">Fashion</button>
+          <button class="filter-btn" data-filter="commercial">
+            Commercial
+          </button>
+        </div>
+      </section>
+
+      <!-- 3. Public Portfolio Gallery Masonry Grid -->
+      <section class="gallery-section">
+        <div class="gallery-masonry" id="galleryGrid">
+          <!-- Dynamic images populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- 4. Featured Models Showcase Directory -->
+      <section class="models-section">
+        <h2 class="section-title">Featured Muses & Models</h2>
+        <div class="models-grid" id="modelsGrid">
+          <!-- Dynamic model profiles populated by JavaScript -->
+        </div>
+      </section>
+    </main>
+
+    <!-- 5. Full-Screen Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+      <span class="lightbox-close" id="lightboxClose">&times;</span>
+      <img id="lightboxImg" src="" alt="Full Resolution View" />
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+      // 1. Navigation Delay Logic (Seamless smooth transition)
+      function delayedNavigate(targetUrl) {
+        const overlay = document.getElementById("nav-loading-overlay");
+        overlay.classList.add("active");
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 400);
+      }
+
+      // 2. Mobile Drawer Toggle
+      const menuBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      menuBtn.addEventListener("click", () =>
+        mobileMenu.classList.toggle("open"),
+      );
+
+      // 3. Global Theme Engine (Synced with client-account.html via localStorage)
+      function applyTheme(theme) {
+        if (theme === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else if (theme === "dark") {
+          document.documentElement.removeAttribute("data-theme");
+        } else {
+          // System Default preference check
+          if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: light)").matches
+          ) {
+            document.documentElement.setAttribute("data-theme", "light");
+          } else {
+            document.documentElement.removeAttribute("data-theme");
+          }
+        }
+      }
+      const savedTheme = localStorage.getItem("px_theme") || "system";
+      applyTheme(savedTheme);
+
+      // 4. Supabase Setup & Data Fetchers
+      const SUPABASE_URL = "https://kplwvidpctgjwkxsabov.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "sb_publishable_ggIovP3ZABeeHr-kIyUy7g_f_Vcy_4k";
+      const supabaseClient = window.supabase
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+        : null;
+
+      // Fetch Giant Quote Spotlight Box
+      async function loadSpotlight() {
+        if (!supabaseClient) return;
+        try {
+          const { data, error } = await supabaseClient
+            .from("site_spotlight")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(1);
+
+          if (error || !data || data.length === 0) return;
+
+          const spotlight = data[0];
+          document.getElementById("spotlightBox").style.backgroundImage =
+            `url('${spotlight.image_url}')`;
+          document.getElementById("spotlightQuote").innerText =
+            `"${spotlight.quote}"`;
+          if (spotlight.subtitle) {
+            document.getElementById("spotlightSubtitle").innerText =
+              spotlight.subtitle;
+          }
+        } catch (e) {
+          console.error("Spotlight load failed:", e);
+        }
+      }
+
+      // Fetch Public Gallery Images
+      async function loadGallery() {
+        const galleryGrid = document.getElementById("galleryGrid");
+        if (!supabaseClient) return;
+
+        try {
+          const { data: images, error } = await supabaseClient
+            .from("gallery_images")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (error || !images || images.length === 0) {
+            galleryGrid.innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-camera"></i>
+              <p>No photos published yet. Check back soon!</p>
+            </div>`;
+            return;
+          }
+
+          galleryGrid.innerHTML = "";
+
+          images.forEach((img) => {
+            const card = document.createElement("div");
+            card.className = `gallery-item ${img.category}`;
+            card.setAttribute("data-category", img.category);
+            card.innerHTML = `
+            <img src="${img.image_url}" alt="${img.title}" loading="lazy" onclick="openLightbox('${img.image_url}', '${img.title}')">
+            <div class="gallery-overlay">
+              <h3>${img.title}</h3>
+              <span>${img.category.toUpperCase()}</span>
+            </div>
+          `;
+            galleryGrid.appendChild(card);
+          });
+        } catch (e) {
+          console.error("Gallery load failed:", e);
+        }
+      }
+
+      // Category Filter System
+      document.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const filter = btn.getAttribute("data-filter");
+          const items = document.querySelectorAll(".gallery-item");
+
+          items.forEach((item) => {
+            if (
+              filter === "all" ||
+              item.getAttribute("data-category") === filter
+            ) {
+              item.style.display = "block";
+            } else {
+              item.style.display = "none";
+            }
+          });
+        });
+      });
+
+      // Fetch Featured Models / Muses Directory
+      async function loadModels() {
+        const modelsGrid = document.getElementById("modelsGrid");
+        if (!supabaseClient) return;
+
+        try {
+          const { data: models, error } = await supabaseClient
+            .from("featured_models")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (error || !models || models.length === 0) {
+            modelsGrid.innerHTML = `
+            <div class="empty-state">
+              <i class="fa-solid fa-users"></i>
+              <p>No model profiles added yet.</p>
+            </div>`;
+            return;
+          }
+
+          modelsGrid.innerHTML = "";
+
+          models.forEach((model) => {
+            const card = document.createElement("div");
+            card.className = "model-card";
+            card.innerHTML = `
+            <img src="${model.image_url}" alt="${model.name}">
+            <h3>${model.name}</h3>
+            <div class="model-socials">
+              ${model.instagram_link ? `<a href="${model.instagram_link}" target="_blank" class="instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>` : ""}
+              ${model.tiktok_link ? `<a href="${model.tiktok_link}" target="_blank" class="tiktok" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>` : ""}
+              ${model.whatsapp_link ? `<a href="${model.whatsapp_link}" target="_blank" class="whatsapp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>` : ""}
+            </div>
+          `;
+            modelsGrid.appendChild(card);
+          });
+        } catch (e) {
+          console.error("Models load failed:", e);
+        }
+      }
+
+      // Lightbox Modal Handlers
+      function openLightbox(url, title) {
+        const lightbox = document.getElementById("lightbox");
+        document.getElementById("lightboxImg").src = url;
+        document.getElementById("lightboxCaption").innerText = title;
+        lightbox.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+
+      document.getElementById("lightboxClose").addEventListener("click", () => {
+        document.getElementById("lightbox").style.display = "none";
+        document.body.style.overflow = "";
+      });
+
+      // Initialize all dynamic data on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        loadSpotlight();
+        loadGallery();
+        loadModels();
+      });
+    </script>
+  </body>
+</html>
