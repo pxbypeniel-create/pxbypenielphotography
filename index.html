@@ -1177,7 +1177,10 @@
           }
         });
       });
-    
+      self.addEventListener('install', (e) => self.skipWaiting());
+self.addEventListener('activate', (e) => e.clients.claim());
+self.addEventListener('fetch', (e) => e.respondWith(fetch(e.request)));
+   <script> 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
@@ -1185,6 +1188,7 @@
         .catch((err) => console.log('SW registration failed:', err));
     });
   }
+     </script>
 </script>
     
   </body>
