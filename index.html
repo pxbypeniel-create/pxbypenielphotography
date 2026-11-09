@@ -1177,18 +1177,14 @@
           }
         });
       });
-      self.addEventListener('install', (e) => self.skipWaiting());
-self.addEventListener('activate', (e) => e.clients.claim());
-self.addEventListener('fetch', (e) => e.respondWith(fetch(e.request)));
-   <script> 
+// Register Service Worker for PWA Installation
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('PWA Service Worker Active'))
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(() => console.log('PWA Service Worker Registered Successfully!'))
         .catch((err) => console.log('SW registration failed:', err));
     });
   }
-     </script>
 </script>
     
   </body>
