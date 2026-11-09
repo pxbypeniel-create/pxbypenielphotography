@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PXByPeniel|User_AccountSettings</title>
+    <title>PXByPeniel | User Account Settings</title>
     <style>
       /* CSS Theme Variables */
       :root {
@@ -17,9 +17,7 @@
         --text-main: #f3f4f6;
         --text-muted: #9ca3af;
         --text-subtle: #6b7280;
-        --font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-          Arial, sans-serif;
+        --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       }
 
       /* Light Theme Variables */
@@ -34,11 +32,7 @@
         --text-subtle: #64748b;
       }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
 
       body {
         background-color: var(--bg-dark);
@@ -46,17 +40,12 @@
         font-family: var(--font-family);
         min-height: 100vh;
         line-height: 1.5;
-        transition:
-          background-color 0.3s ease,
-          color 0.3s ease;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      ::selection {
-        background-color: var(--accent-gold);
-        color: #000;
-      }
+      ::selection { background-color: var(--accent-gold); color: #000; }
 
-      /* Navigation Bar - Fully Responsive */
+      /* Navigation Bar */
       .navbar {
         background-color: var(--bg-card);
         border-bottom: 1px solid var(--border-color);
@@ -67,9 +56,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        transition:
-          background-color 0.3s ease,
-          border-color 0.3s ease;
       }
 
       .brand-logo {
@@ -102,7 +88,6 @@
         font-weight: 600;
         letter-spacing: 0.05em;
         padding-bottom: 0.25rem;
-        transition: color 0.2s ease;
         cursor: pointer;
       }
 
@@ -111,13 +96,8 @@
         border-bottom: 2px solid var(--accent-gold);
       }
 
-      .nav-link.inactive {
-        color: var(--text-muted);
-      }
-
-      .nav-link.inactive:hover {
-        color: var(--accent-gold);
-      }
+      .nav-link.inactive { color: var(--text-muted); }
+      .nav-link.inactive:hover { color: var(--accent-gold); }
 
       .hamburger-btn {
         background: none;
@@ -126,14 +106,9 @@
         cursor: pointer;
         padding: 0.5rem;
         display: flex;
-        align-items: center;
-        justify-content: center;
       }
 
-      .hamburger-btn svg {
-        width: 1.75rem;
-        height: 1.75rem;
-      }
+      .hamburger-btn svg { width: 1.75rem; height: 1.75rem; }
 
       .mobile-drawer {
         display: none;
@@ -141,57 +116,22 @@
         border-bottom: 1px solid var(--border-color);
         padding: 1rem 1.5rem;
         text-align: center;
-        transition: background-color 0.3s ease;
       }
 
-      .mobile-drawer.open {
-        display: block;
-      }
-
-      .mobile-drawer .mobile-link {
-        display: block;
-        padding: 0.75rem 0;
-        font-size: 1rem;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .mobile-drawer .mobile-link.active {
-        color: var(--accent-gold);
-        font-weight: 700;
-      }
-
-      .mobile-drawer .mobile-link.inactive {
-        color: var(--text-muted);
-        font-weight: 500;
-      }
-
-      .mobile-drawer .mobile-link.inactive:hover {
-        color: var(--accent-gold);
-      }
+      .mobile-drawer.open { display: block; }
+      .mobile-drawer .mobile-link { display: block; padding: 0.75rem 0; font-size: 1rem; text-decoration: none; cursor: pointer; }
+      .mobile-drawer .mobile-link.active { color: var(--accent-gold); font-weight: 700; }
+      .mobile-drawer .mobile-link.inactive { color: var(--text-muted); font-weight: 500; }
 
       @media (min-width: 768px) {
-        .navbar {
-          padding: 1rem 2rem;
-        }
-        .brand-logo img {
-          height: 4.5rem;
-        }
-        .brand-logo {
-          font-size: 1.25rem;
-        }
-        .desktop-nav {
-          display: flex;
-        }
-        .hamburger-btn {
-          display: none;
-        }
-        .mobile-drawer {
-          display: none !important;
-        }
+        .navbar { padding: 1rem 2rem; }
+        .brand-logo img { height: 4.5rem; }
+        .desktop-nav { display: flex; }
+        .hamburger-btn { display: none; }
+        .mobile-drawer { display: none !important; }
       }
 
-      /* Main Container */
+      /* Main Content */
       main {
         max-width: 56rem;
         margin: 0 auto;
@@ -202,13 +142,9 @@
       }
 
       @media (min-width: 768px) {
-        main {
-          padding: 2.5rem 1.5rem;
-          gap: 2.5rem;
-        }
+        main { padding: 2.5rem 1.5rem; gap: 2.5rem; }
       }
 
-      /* Profile Header & Central Large Avatar Upload */
       .profile-header-card {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
@@ -220,15 +156,6 @@
         justify-content: center;
         text-align: center;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
-        transition:
-          background-color 0.3s ease,
-          border-color 0.3s ease;
-      }
-
-      @media (min-width: 640px) {
-        .profile-header-card {
-          padding: 2.5rem 1.5rem;
-        }
       }
 
       .avatar-wrapper {
@@ -239,10 +166,7 @@
       }
 
       @media (min-width: 640px) {
-        .avatar-wrapper {
-          width: 8.5rem;
-          height: 8.5rem;
-        }
+        .avatar-wrapper { width: 8.5rem; height: 8.5rem; }
       }
 
       .avatar-circle {
@@ -270,12 +194,6 @@
         color: var(--accent-gold);
       }
 
-      @media (min-width: 640px) {
-        .avatar-initial {
-          font-size: 3rem;
-        }
-      }
-
       .avatar-upload-overlay {
         position: absolute;
         bottom: 0;
@@ -290,16 +208,7 @@
         justify-content: center;
         cursor: pointer;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        transition:
-          transform 0.2s ease,
-          background-color 0.2s ease;
-      }
-
-      @media (min-width: 640px) {
-        .avatar-upload-overlay {
-          width: 2.5rem;
-          height: 2.5rem;
-        }
+        transition: transform 0.2s ease, background-color 0.2s ease;
       }
 
       .avatar-upload-overlay:hover {
@@ -307,26 +216,14 @@
         background-color: var(--accent-gold-hover);
       }
 
-      .avatar-upload-overlay svg {
-        width: 1.125rem;
-        height: 1.125rem;
-      }
-
-      #avatar-file-input {
-        display: none;
-      }
+      .avatar-upload-overlay svg { width: 1.125rem; height: 1.125rem; }
+      #avatar-file-input { display: none; }
 
       .user-display-title {
         font-size: 1.25rem;
         font-weight: 700;
         color: var(--text-main);
         word-break: break-word;
-      }
-
-      @media (min-width: 640px) {
-        .user-display-title {
-          font-size: 1.5rem;
-        }
       }
 
       .user-display-email {
@@ -336,28 +233,16 @@
         word-break: break-all;
       }
 
-      @media (min-width: 640px) {
-        .user-display-email {
-          font-size: 0.875rem;
-        }
-      }
-
-      /* Card Styling */
       .card {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
         padding: 1.25rem;
         border-radius: 1rem;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
-        transition:
-          background-color 0.3s ease,
-          border-color 0.3s ease;
       }
 
       @media (min-width: 768px) {
-        .card {
-          padding: 2rem;
-        }
+        .card { padding: 2rem; }
       }
 
       .card-title {
@@ -370,13 +255,6 @@
         justify-content: space-between;
       }
 
-      @media (min-width: 768px) {
-        .card-title {
-          font-size: 1.35rem;
-        }
-      }
-
-      /* Form Grid Layout (Responsive Side-by-Side) */
       .form-grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -384,18 +262,11 @@
       }
 
       @media (min-width: 640px) {
-        .form-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .form-grid .full-width {
-          grid-column: span 2;
-        }
+        .form-grid { grid-template-columns: 1fr 1fr; }
+        .form-grid .full-width { grid-column: span 2; }
       }
 
-      .form-group {
-        display: flex;
-        flex-direction: column;
-      }
+      .form-group { display: flex; flex-direction: column; }
 
       .form-label {
         font-size: 0.875rem;
@@ -404,8 +275,7 @@
         margin-bottom: 0.5rem;
       }
 
-      .form-input,
-      .form-select {
+      .form-input, .form-select {
         width: 100%;
         padding: 0.875rem 1rem;
         background-color: var(--bg-dark);
@@ -413,14 +283,10 @@
         border-radius: 0.5rem;
         color: var(--text-main);
         font-size: 0.875rem;
-        transition:
-          border-color 0.2s ease,
-          background-color 0.3s ease,
-          color 0.3s ease;
+        transition: border-color 0.2s ease;
       }
 
-      .form-input:focus,
-      .form-select:focus {
+      .form-input:focus, .form-select:focus {
         outline: none;
         border-color: var(--accent-gold);
       }
@@ -433,9 +299,7 @@
       }
 
       @media (min-width: 480px) {
-        .button-group {
-          flex-direction: row;
-        }
+        .button-group { flex-direction: row; }
       }
 
       .btn-gold {
@@ -451,172 +315,21 @@
         border-radius: 0.5rem;
         border: none;
         cursor: pointer;
-        transition:
-          background-color 0.2s ease,
-          transform 0.2s ease;
+        transition: background-color 0.2s ease, transform 0.2s ease;
         width: 100%;
       }
 
-      @media (min-width: 480px) {
-        .btn-gold {
-          width: auto;
-        }
-      }
+      @media (min-width: 480px) { .btn-gold { width: auto; } }
+      .btn-gold:hover { background-color: var(--accent-gold-hover); transform: translateY(-1px); }
+      .btn-secondary { background-color: transparent; color: var(--text-main); border: 1px solid var(--border-color); }
+      .btn-secondary:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
+      .btn-danger { background-color: #7f1d1d; color: #fca5a5; border: 1px solid #991b1b; }
+      .btn-danger:hover { background-color: #991b1b; color: #fff; }
 
-      .btn-gold:hover {
-        background-color: var(--accent-gold-hover);
-        transform: translateY(-1px);
-      }
-
-      .btn-secondary {
-        background-color: transparent;
-        color: var(--text-main);
-        border: 1px solid var(--border-color);
-      }
-
-      .btn-secondary:hover {
-        border-color: var(--accent-gold);
-        color: var(--accent-gold);
-      }
-
-      .btn-danger {
-        background-color: #7f1d1d;
-        color: #fca5a5;
-        border: 1px solid #991b1b;
-      }
-
-      .btn-danger:hover {
-        background-color: #991b1b;
-        color: #fff;
-      }
-
-      /* Notification Toggles */
-      .toggle-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-color);
-        gap: 1rem;
-      }
-
-      .toggle-row:last-child {
-        border-bottom: none;
-      }
-
-      .toggle-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-      }
-
-      .toggle-title {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--text-main);
-      }
-
-      @media (min-width: 640px) {
-        .toggle-title {
-          font-size: 0.95rem;
-        }
-      }
-
-      .toggle-desc {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-      }
-
-      .switch {
-        position: relative;
-        display: inline-block;
-        width: 2.75rem;
-        height: 1.5rem;
-        flex-shrink: 0;
-      }
-
-      .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-
-      .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #374151;
-        transition: 0.3s;
-        border-radius: 1.5rem;
-      }
-
-      .slider:before {
-        position: absolute;
-        content: "";
-        height: 1.125rem;
-        width: 1.125rem;
-        left: 0.1875rem;
-        bottom: 0.1875rem;
-        background-color: white;
-        transition: 0.3s;
-        border-radius: 50%;
-      }
-
-      input:checked + .slider {
-        background-color: var(--accent-gold);
-      }
-
-      input:checked + .slider:before {
-        transform: translateX(1.25rem);
-      }
-
-      /* Settings Icon Button for Security Section */
-      .settings-icon-btn {
-        background: none;
-        border: none;
-        color: var(--text-muted);
-        cursor: pointer;
-        padding: 0.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition:
-          color 0.2s ease,
-          transform 0.2s ease;
-      }
-
-      .settings-icon-btn:hover {
-        color: var(--accent-gold);
-        transform: rotate(45deg);
-      }
-
-      .settings-icon-btn svg {
-        width: 1.25rem;
-        height: 1.25rem;
-      }
-
-      /* Collapsible Advanced Settings Panel */
-      .advanced-settings-panel {
-        display: none;
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px dashed var(--border-color);
-      }
-
-      .advanced-settings-panel.open {
-        display: block;
-      }
-
-      /* Navigation Overlay Delay Screen */
+      /* Loading Overlay */
       #nav-loading-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        top: 0; left: 0; right: 0; bottom: 0;
         background-color: rgba(10, 10, 10, 0.85);
         backdrop-filter: blur(4px);
         z-index: 1000;
@@ -627,13 +340,10 @@
         color: var(--accent-gold);
       }
 
-      #nav-loading-overlay.active {
-        display: flex;
-      }
+      #nav-loading-overlay.active { display: flex; }
 
       .spinner {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2.5rem; height: 2.5rem;
         border: 3px solid rgba(212, 175, 55, 0.3);
         border-radius: 50%;
         border-top-color: var(--accent-gold);
@@ -641,20 +351,14 @@
         margin-bottom: 1rem;
       }
 
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
   </head>
   <body>
     <!-- Page Transition Overlay -->
     <div id="nav-loading-overlay">
       <div class="spinner"></div>
-      <p style="font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em">
-        Loading section...
-      </p>
+      <p style="font-size: 0.875rem; font-weight: 600;">Loading section...</p>
     </div>
 
     <!-- Navigation Bar -->
@@ -665,66 +369,25 @@
       </a>
 
       <div class="desktop-nav">
-        <a
-          onclick="delayedNavigate('client-home.html')"
-          class="nav-link inactive"
-          >About</a
-        >
-        <a
-          onclick="delayedNavigate('client-gallery.html')"
-          class="nav-link inactive"
-          >Gallery</a
-        >
-        <a
-          onclick="delayedNavigate('client-bookings.html')"
-          class="nav-link inactive"
-          >Bookings</a
-        >
-        <a
-          onclick="delayedNavigate('client-account.html')"
-          class="nav-link active"
-          >Account</a
-        >
+        <a onclick="delayedNavigate('client-home.html')" class="nav-link inactive">About</a>
+        <a onclick="delayedNavigate('client-gallery.html')" class="nav-link inactive">Gallery</a>
+        <a onclick="delayedNavigate('client-bookings.html')" class="nav-link inactive">Bookings</a>
+        <a onclick="delayedNavigate('client-account.html')" class="nav-link active">Account</a>
       </div>
 
-      <button
-        id="mobile-menu-btn"
-        class="hamburger-btn"
-        aria-label="Toggle Navigation Menu"
-      >
+      <button id="mobile-menu-btn" class="hamburger-btn" aria-label="Toggle Navigation Menu">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2.5"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
     </nav>
 
     <!-- Mobile Navigation Drawer -->
     <div id="mobile-menu" class="mobile-drawer">
-      <a
-        onclick="delayedNavigate('client-home.html')"
-        class="mobile-link inactive"
-        >About</a
-      >
-      <a
-        onclick="delayedNavigate('client-gallery.html')"
-        class="mobile-link inactive"
-        >Gallery</a
-      >
-      <a
-        onclick="delayedNavigate('client-bookings.html')"
-        class="mobile-link inactive"
-        >Bookings</a
-      >
-      <a
-        onclick="delayedNavigate('client-account.html')"
-        class="mobile-link active"
-        >Account</a
-      >
+      <a onclick="delayedNavigate('client-home.html')" class="mobile-link inactive">About</a>
+      <a onclick="delayedNavigate('client-gallery.html')" class="mobile-link inactive">Gallery</a>
+      <a onclick="delayedNavigate('client-bookings.html')" class="mobile-link inactive">Bookings</a>
+      <a onclick="delayedNavigate('client-account.html')" class="mobile-link active">Account</a>
     </div>
 
     <!-- Main Content -->
@@ -733,58 +396,29 @@
       <section class="profile-header-card">
         <div class="avatar-wrapper">
           <div class="avatar-circle">
-            <img
-              id="avatar-preview-img"
-              src=""
-              alt="Profile Picture"
-              style="display: none"
-            />
+            <img id="avatar-preview-img" src="" alt="Profile Picture" style="display: none;" />
             <span id="user-avatar-initial" class="avatar-initial">P</span>
           </div>
-          <label
-            for="avatar-file-input"
-            class="avatar-upload-overlay"
-            title="Upload or Change Picture"
-          >
+          <label for="avatar-file-input" class="avatar-upload-overlay" title="Upload or Change Picture">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-              />
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-              />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </label>
           <input type="file" id="avatar-file-input" accept="image/*" />
         </div>
-        <h1 id="header-display-name" class="user-display-title">
-          Client Profile
-        </h1>
-        <p id="header-display-email" class="user-display-email">
-          client@example.com
-        </p>
+        <h1 id="header-display-name" class="user-display-title">Client Profile</h1>
+        <p id="header-display-email" class="user-display-email">client@example.com</p>
       </section>
 
-      <!-- 2. Edit Personal Details Form (Side-by-Side Layout) -->
+      <!-- 2. Edit Personal Details Form -->
       <section class="card">
         <h2 class="card-title">Edit Personal Details</h2>
         <form id="profile-form">
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label" for="account-username">Username</label>
-              <input
-                type="text"
-                id="account-username"
-                class="form-input"
-                placeholder="e.g. Alex"
-                required
-              />
+              <label class="form-label" for="account-username">Username / Name</label>
+              <input type="text" id="account-username" class="form-input" placeholder="e.g. Alex" required />
             </div>
 
             <div class="form-group">
@@ -804,47 +438,27 @@
 
             <div class="form-group">
               <label class="form-label" for="account-phone">Phone Number</label>
-              <input
-                type="tel"
-                id="account-phone"
-                class="form-input"
-                placeholder="+234..."
-              />
+              <input type="tel" id="account-phone" class="form-input" placeholder="+234..." />
             </div>
 
             <div class="form-group full-width">
-              <label class="form-label" for="account-email"
-                >Email Address</label
-              >
-              <input
-                type="email"
-                id="account-email"
-                class="form-input"
-                disabled
-              />
+              <label class="form-label" for="account-email">Email Address</label>
+              <input type="email" id="account-email" class="form-input" disabled />
             </div>
           </div>
 
           <div class="button-group">
             <button type="submit" class="btn-gold">Save Changes</button>
-            <button
-              type="button"
-              id="reset-form-btn"
-              class="btn-gold btn-secondary"
-            >
-              Restart / Reset
-            </button>
+            <button type="button" id="reset-form-btn" class="btn-gold btn-secondary">Restart / Reset</button>
           </div>
         </form>
       </section>
 
-      <!-- 3. Theme Preferences (System Default, Light Mode, Dark Mode) -->
+      <!-- 3. Appearance & Theme -->
       <section class="card">
         <h2 class="card-title">Appearance & Theme</h2>
         <div class="form-group">
-          <label class="form-label" for="theme-select"
-            >Portal Color Scheme</label
-          >
+          <label class="form-label" for="theme-select">Portal Color Scheme</label>
           <select id="theme-select" class="form-select">
             <option value="system">System Default</option>
             <option value="light">Light Mode</option>
@@ -853,196 +467,69 @@
         </div>
       </section>
 
-      <!-- 4. Notification Preferences -->
+      <!-- 4. Security & Sign Out -->
       <section class="card">
-        <h2 class="card-title">Notification Preferences</h2>
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <span class="toggle-title"
-              >Push Notifications (Booking Updates)</span
-            >
-            <span class="toggle-desc"
-              >Receive real-time alerts when your booking status is
-              updated.</span
-            >
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="notif-bookings" checked />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <span class="toggle-title">Gallery & Photo-Ready Alerts</span>
-            <span class="toggle-desc"
-              >Get notified immediately when your photo shoot edits are
-              ready.</span
-            >
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="notif-gallery" checked />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <span class="toggle-title">App Updates & Feature News</span>
-            <span class="toggle-desc"
-              >General notifications for platform updates and studio
-              features.</span
-            >
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="notif-updates" checked />
-            <span class="slider"></span>
-          </label>
-        </div>
-      </section>
-
-      <!-- 5. Security Session & Advanced Delete Account -->
-      <section class="card">
-        <div class="card-title">
-          <span>Security & Session</span>
-          <button
-            id="toggle-advanced-btn"
-            class="settings-icon-btn"
-            title="Advanced Settings"
-          >
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-              />
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <p
-          style="
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 1.25rem;
-          "
-        >
-          You are securely authenticated. Signing out will end your active
-          portal session and return you to the login page.
+        <h2 class="card-title">Security & Session</h2>
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+          You are securely authenticated. Signing out will end your active portal session and return you to the login page.
         </p>
-
         <button id="logout-btn" class="btn-gold btn-danger">Sign Out</button>
-
-        <!-- Collapsible Advanced Settings -->
-        <div id="advanced-settings-panel" class="advanced-settings-panel">
-          <h3
-            style="
-              font-size: 1rem;
-              color: #ef4444;
-              margin-bottom: 0.5rem;
-              font-weight: 700;
-            "
-          >
-            Advanced Settings
-          </h3>
-          <p
-            style="
-              font-size: 0.8125rem;
-              color: var(--text-muted);
-              margin-bottom: 1rem;
-            "
-          >
-            Deleting your account will permanently wipe your session and profile
-            metadata, then return you to index.html.
-          </p>
-          <button
-            id="delete-account-btn"
-            class="btn-gold btn-danger"
-            style="background-color: #991b1b"
-          >
-            Delete Account
-          </button>
-        </div>
       </section>
     </main>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      // 1. Navigation Delay Logic (Simulates seamless smooth transition)
       function delayedNavigate(targetUrl) {
         const overlay = document.getElementById("nav-loading-overlay");
         overlay.classList.add("active");
-        setTimeout(() => {
-          window.location.href = targetUrl;
-        }, 400); // 400ms delay for smooth loading output
+        setTimeout(() => { window.location.href = targetUrl; }, 400);
       }
 
-      // 2. Mobile Drawer Toggle
-      const menuBtn = document.getElementById("mobile-menu-btn");
-      const mobileMenu = document.getElementById("mobile-menu");
-      menuBtn.addEventListener("click", () =>
-        mobileMenu.classList.toggle("open"),
-      );
+      document.getElementById("mobile-menu-btn").addEventListener("click", () => {
+        document.getElementById("mobile-menu").classList.toggle("open");
+      });
 
-      // 3. Theme Switching Logic
+      // Theme Control
       const themeSelect = document.getElementById("theme-select");
-
       function applyTheme(theme) {
         if (theme === "light") {
           document.documentElement.setAttribute("data-theme", "light");
         } else if (theme === "dark") {
           document.documentElement.removeAttribute("data-theme");
         } else {
-          // System Default
-          if (
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: light)").matches
-          ) {
+          if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
             document.documentElement.setAttribute("data-theme", "light");
           } else {
             document.documentElement.removeAttribute("data-theme");
           }
         }
       }
-
       const savedTheme = localStorage.getItem("px_theme") || "system";
       themeSelect.value = savedTheme;
       applyTheme(savedTheme);
 
       themeSelect.addEventListener("change", (e) => {
-        const selected = e.target.value;
-        localStorage.setItem("px_theme", selected);
-        applyTheme(selected);
+        localStorage.setItem("px_theme", e.target.value);
+        applyTheme(e.target.value);
       });
 
-      // 4. Supabase Setup & User Profile Hydration
+      // Supabase & User Profile Hydration
       const SUPABASE_URL = "https://kplwvidpctgjwkxsabov.supabase.co";
-      const SUPABASE_ANON_KEY =
-        "sb_publishable_ggIovP3ZABeeHr-kIyUy7g_f_Vcy_4k";
-      const supabaseClient = window.supabase
-        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-        : null;
+      const SUPABASE_ANON_KEY = "sb_publishable_ggIovP3ZABeeHr-kIyUy7g_f_Vcy_4k";
+      const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
       let initialUserData = {};
 
       async function loadUserData() {
-        let storedName = localStorage.getItem("px_user_name") || "";
         let storedEmail = localStorage.getItem("px_user_email") || "";
+        let storedName = localStorage.getItem("px_user_name") || "";
         let storedAvatar = localStorage.getItem("px_user_avatar") || "";
         let storedGender = localStorage.getItem("px_user_gender") || "";
         let storedDob = localStorage.getItem("px_user_dob") || "";
         let storedPhone = localStorage.getItem("px_user_phone") || "";
 
         if (supabaseClient) {
-          // Fetch active session or user directly from Supabase Auth
           const { data: sessionData } = await supabaseClient.auth.getSession();
           let user = sessionData?.session?.user;
 
@@ -1053,25 +540,18 @@
 
           if (user) {
             const meta = user.user_metadata || {};
-            storedName =
-              meta.full_name ||
-              meta.name ||
-              storedName ||
-              (user.email ? user.email.split("@")[0] : "Client");
-
             storedEmail = user.email || storedEmail;
-
-            // Cache in localStorage for cross-page sync
-            localStorage.setItem("px_user_name", storedName);
+            if (!storedName) {
+              storedName = meta.full_name || meta.name || (user.email ? user.email.split("@")[0] : "Client");
+            }
             localStorage.setItem("px_user_email", storedEmail);
+            localStorage.setItem("px_user_name", storedName);
           }
         }
 
-        // Fallbacks if not set
         if (!storedName) storedName = "Client";
         if (!storedEmail) storedEmail = "client@example.com";
 
-        // Store initial data for reset capability
         initialUserData = {
           name: storedName,
           email: storedEmail,
@@ -1080,10 +560,8 @@
           phone: storedPhone,
         };
 
-        // Populate form and header fields with actual Google Account data
         document.getElementById("account-email").value = storedEmail;
-        document.getElementById("header-display-email").textContent =
-          storedEmail;
+        document.getElementById("header-display-email").textContent = storedEmail;
 
         populateForm(initialUserData);
         updateAvatarDisplay(storedName, storedAvatar);
@@ -1094,8 +572,7 @@
         document.getElementById("account-gender").value = data.gender || "";
         document.getElementById("account-dob").value = data.dob || "";
         document.getElementById("account-phone").value = data.phone || "";
-        document.getElementById("header-display-name").textContent =
-          data.name || "Client";
+        document.getElementById("header-display-name").textContent = data.name || "Client";
       }
 
       function updateAvatarDisplay(name, avatarUrl) {
@@ -1109,78 +586,69 @@
         } else {
           avatarImg.style.display = "none";
           avatarInitial.style.display = "block";
-          avatarInitial.textContent = name.charAt(0).toUpperCase();
+          avatarInitial.textContent = name ? name.charAt(0).toUpperCase() : "C";
         }
       }
 
-      // 5. Image Upload & Preview Logic (Saves Base64 avatar locally for cross-page sync)
-      const fileInput = document.getElementById("avatar-file-input");
-      fileInput.addEventListener("change", (e) => {
+      // Handle Image File Selection
+      document.getElementById("avatar-file-input").addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (file) {
           const reader = new FileReader();
           reader.onload = function (evt) {
             const base64Img = evt.target.result;
             localStorage.setItem("px_user_avatar", base64Img);
-            const currentName =
-              document.getElementById("account-username").value || "Client";
+            const currentName = document.getElementById("account-username").value || "Client";
             updateAvatarDisplay(currentName, base64Img);
           };
           reader.readAsDataURL(file);
         }
       });
 
-      // 6. Save Form Details
-      document
-        .getElementById("profile-form")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const newName = document.getElementById("account-username").value;
-          const newGender = document.getElementById("account-gender").value;
-          const newDob = document.getElementById("account-dob").value;
-          const newPhone = document.getElementById("account-phone").value;
+      // Save Form Changes
+      document.getElementById("profile-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const newName = document.getElementById("account-username").value.trim();
+        const newGender = document.getElementById("account-gender").value;
+        const newDob = document.getElementById("account-dob").value;
+        const newPhone = document.getElementById("account-phone").value;
 
-          // Save locally for instant reflection on client-home.html
-          localStorage.setItem("px_user_name", newName);
-          localStorage.setItem("px_user_gender", newGender);
-          localStorage.setItem("px_user_dob", newDob);
-          localStorage.setItem("px_user_phone", newPhone);
+        localStorage.setItem("px_user_name", newName);
+        localStorage.setItem("px_user_gender", newGender);
+        localStorage.setItem("px_user_dob", newDob);
+        localStorage.setItem("px_user_phone", newPhone);
 
-          if (supabaseClient) {
-            await supabaseClient.auth.updateUser({
-              data: {
-                full_name: newName,
-                gender: newGender,
-                date_of_birth: newDob,
-                phone: newPhone,
-              },
-            });
-          }
+        if (supabaseClient) {
+          await supabaseClient.auth.updateUser({
+            data: {
+              full_name: newName,
+              gender: newGender,
+              date_of_birth: newDob,
+              phone: newPhone,
+            },
+          });
+        }
 
-          document.getElementById("header-display-name").textContent = newName;
-          const currentAvatar = localStorage.getItem("px_user_avatar");
-          updateAvatarDisplay(newName, currentAvatar);
+        document.getElementById("header-display-name").textContent = newName;
+        const currentAvatar = localStorage.getItem("px_user_avatar");
+        updateAvatarDisplay(newName, currentAvatar);
 
-          alert("Account settings updated successfully!");
-        });
+        alert("Account settings updated successfully!");
+      });
 
-      // 7. Restart / Reset Form Button
-      document
-        .getElementById("reset-form-btn")
-        .addEventListener("click", () => {
-          populateForm(initialUserData);
-        });
+      document.getElementById("reset-form-btn").addEventListener("click", () => {
+        populateForm(initialUserData);
+      });
 
-      // Sign Out Button (Takes back to login index.html)
-      document
-        .getElementById("logout-btn")
-        .addEventListener("click", async () => {
-          if (supabaseClient) {
-            await supabaseClient.auth.signOut();
-          }
-          localStorage.clear();
-          delayedNavigate("client-login.html");
-        });
+      document.getElementById("logout-btn").addEventListener("click", async () => {
+        if (supabaseClient) {
+          await supabaseClient.auth.signOut();
+        }
+        localStorage.clear();
+        delayedNavigate("client-login.html");
+      });
+
+      document.addEventListener("DOMContentLoaded", loadUserData);
     </script>
   </body>
 </html>
