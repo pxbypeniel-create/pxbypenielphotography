@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="/manifest.webmanifest" />
-<meta name="theme-color" content="#d4af37" />
+<meta name="theme-color" content="#0a0ab0d" />
     <title>PXByPeniel | Client Portal Auth</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1128,18 +1128,7 @@
             }, 800);
           }
         });
-      self.addEventListener('install', (e) => self.skipWaiting());
-self.addEventListener('activate', (e) => e.clients.claim());
-self.addEventListener('fetch', (e) => e.respondWith(fetch(e.request)));
-      
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('PWA Service Worker Active'))
-        .catch((err) => console.log('SW registration failed:', err));
-    });
-  }
-
+ 
     </script>
   </body>
 </html>
