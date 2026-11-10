@@ -921,6 +921,33 @@
         }
         widget.releasePointerCapture(e.pointerId);
       });
+      async function checkPersistentSession() {
+  if (!supabaseClient) return;
+
+  // 1. Get the current active session from local storage / Supabase client
+  const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+  if (error || !session) {
+    // Only redirect to login if there is genuinely no active session stored
+    window.location.href = "client-login.html";
+    return;
+  }
+
+  // 2. Session exists! User stays logged in automatically.
+  // You can extract user details safely here:
+  const user = session.user;
+  const meta = user.user_metadata || {};
+  const displayName = meta.full_name || meta.name || user.email.split("@")[0];
+  
+  // Cache locally for instant UI reactivity
+  localStorage.setItem("px_user_name", displayName);
+  localStorage.setItem("px_user_email", user.email);
+}
+
+// Run check on page load
+document.addEventListener("DOMContentLoaded", () => {
+  checkPersistentSession();
+});
     </script>
   </body>
 </html>
