@@ -1128,6 +1128,19 @@
             }, 800);
           }
         });
+      // On the login page: If user is ALREADY logged in, send them straight to client-home.html
+async function redirectIfAlreadyLoggedIn() {
+  if (!supabaseClient) return;
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  
+  if (session) {
+    // User has an active session, skip login completely
+    window.location.href = "client-home.html";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", redirectIfAlreadyLoggedIn);
  
     </script>
   </body>
