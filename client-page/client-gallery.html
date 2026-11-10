@@ -739,6 +739,12 @@
       <div class="lightbox-caption" id="lightboxCaption"></div>
     </div>
 
+    <!-- Place the Lightbox Modal HTML here -->
+    <div id="imageLightboxModal" onclick="closeLightbox()">
+      <button id="lightboxCloseBtn">&times;</button>
+      <img id="lightboxImage" src="" alt="Expanded View" />
+    </div>
+
     <!-- JavaScript Logic -->
     <script>
       // 1. Navigation Delay Logic (Seamless smooth transition)
@@ -964,6 +970,28 @@
 document.addEventListener("DOMContentLoaded", () => {
   checkPersistentSession();
 });
+      // Lightbox Trigger Functionality
+      function openLightbox(imgSrc) {
+        const modal = document.getElementById("imageLightboxModal");
+        const modalImg = document.getElementById("lightboxImage");
+        modalImg.src = imgSrc;
+        modal.style.display = "flex";
+      }
+
+      function closeLightbox() {
+        document.getElementById("imageLightboxModal").style.display = "none";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const images = document.querySelectorAll(".gallery-item-img img, .model-box-card img");
+        images.forEach(img => {
+          img.style.cursor = "pointer";
+          img.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openLightbox(img.src);
+          });
+        });
+      });
     </script>
   </body>
 </html>
