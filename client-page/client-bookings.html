@@ -754,41 +754,69 @@
         document.getElementById("intentModal").style.display = "none";
       });
 
-      document
-        .getElementById("intentYesBtn")
-        .addEventListener("click", async () => {
-          document.getElementById("intentModal").style.display = "none";
-          const clientName = localStorage.getItem("px_user_name") || "Client";
-          const clientEmail =
-            localStorage.getItem("px_user_email") || "client@example.com";
-          const sessionCode =
-            "PX-" + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById("intentYesBtn").addEventListener("click", async () => {
+  document.getElementById("intentModal").style.display = "none";
+  const clientName = localStorage.getItem("px_user_name") || "Client";
+  const clientEmail = localStorage.getItem("px_user_email") || "client@example.com";
+  const sessionCode = "PX-" + Math.floor(100000 + Math.random() * 900000);
 
-          if (supabaseClient) {
-            const { data, error } = await supabaseClient
+  if (supabaseClient) {
+    // 1. Save booking to Supabase as Pending first
+    const { data, error } = await supabaseClient
+      .from("client_bookings")
+      .insert([
+        {
+          session_id: sessionCode,
+          client_name: clientName,
+          client_email: clientEmail,
+          package_name: selectedPackageData.name,
+          amount: selectedPackageData.price,
+          status: "Pending",
+          verified: false,
+        },
+      ])
+      .select();
+
+    if (!error && data && data.length > 0) {
+      // 2. Safely trigger Paystack popup
+      try {
+        if (typeof PaystackPop === 'undefined') {
+          alert("Paystack gateway script is still loading. Please check your internet connection and try again.");
+          return;
+        }
+
+        const handler = PaystackPop.setup({
+          key: PAYSTACK_PUBLIC_KEY,
+          email: clientEmail,
+          amount: selectedPackageData.price * 100, // Paystack expects amount in kobo/cents
+          currency: "NGN",
+          ref: sessionCode,
+          onClose: () => {
+            alert("Payment window closed. Booking saved as Pending.");
+            fetchClientBookings();
+          },
+          callback: async (response) => {
+            // 3. Mark as verified upon successful payment
+            await supabaseClient
               .from("client_bookings")
-              .insert([
-                {
-                  session_id: sessionCode,
-                  client_name: clientName,
-                  client_email: clientEmail,
-                  package_name: selectedPackageData.name,
-                  amount: selectedPackageData.price,
-                  status: "Pending",
-                  verified: false,
-                },
-              ])
-              .select();
-
-            if (!error && data && data.length > 0) {
-              launchPaystack(data[0]);
-            } else {
-              alert(
-                "Error initiating booking: " + (error ? error.message : ""),
-              );
-            }
-          }
+              .update({ verified: true, payment_ref: response.reference })
+              .eq("id", data[0].id);
+            
+            alert("Payment successful! Verification passed.");
+            fetchClientBookings();
+          },
         });
+        
+        handler.openIframe();
+      } catch (paystackErr) {
+        console.error("Paystack Error:", paystackErr);
+        alert("Could not open Paystack checkout window. Please ensure your ad-blocker is disabled.");
+      }
+    } else {
+      alert("Error initiating booking: " + (error ? error.message : "Unknown database error"));
+    }
+  }
+});
 
       function launchPaystack(booking) {
         const handler = PaystackPop.setup({
