@@ -992,6 +992,14 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         });
       });
+      window.addEventListener('focus', () => {
+  if (typeof loadGallery === 'function') loadGallery();
+  if (typeof loadSpotlight === 'function') loadSpotlight();
+  if (typeof loadModels === 'function') loadModels();
+  if (typeof fetchClientPackages === 'function') fetchClientPackages();
+  if (typeof fetchClientBookings === 'function') fetchClientBookings();
+});
+      
     </script>
   </body>
 </html>
