@@ -1074,7 +1074,7 @@
               window.location.origin.includes("127.0.0.1") ||
               window.location.origin.includes("localhost")
                 ? window.location.origin + "/update-password.html"
-                : "https://pxbypenielphotography.vercel.app/update-password.html";
+                : `{window.location.origin}/update-password.html`;
 
             const { data, error } =
               await supabaseClient.auth.resetPasswordForEmail(email, {
